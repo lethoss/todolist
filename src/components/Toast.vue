@@ -13,12 +13,12 @@
 export  default {
   methods: {
     isRemove (isRemove) {
-      this.$emit('closeToast', isRemove)
+      this.$emit('closeToast', isRemove) //return the 'yes' or 'no' message in parent component
     }
   },
   computed: {
     message () {
-      return this.$store.getters.getMessage
+      return this.$store.getters.getMessage //get the correct info message from Vuex store for different calls
     }
   }
 }
@@ -26,6 +26,8 @@ export  default {
 
 <style scoped>
 .toast {
+  border: 2px solid blue;
+  border-radius: 20px;
   margin-top: -70px;
   margin-left: -150px;
   width: 300px;
@@ -37,7 +39,8 @@ export  default {
   padding: 10px;
   display: flex;
   justify-content: center;
-  align-items: center
+  align-items: center;
+  z-index: 3;
 }
 .buttons {
   text-align: center;

@@ -1,35 +1,8 @@
 export default {
   state: {
-    todoList: [
-      {
-        title: 'Todo 1',
-        todoItems: [
-          {
-            item: 'do 1',
-            checked: true
-          },
-          {
-            item: 'do 2',
-            checked: false
-          }
-        ]
-      },
-      {
-        title: 'Todo 2',
-        todoItems: [
-          {
-            item: 'do 11',
-            checked: true
-          },
-          {
-            item: 'do 22',
-            checked: false
-          }
-        ]
-      }
-    ]
+    todoList: []
   },
-  mutations: {
+  mutations: { // simple mutations to change the state of Vuex store
     addNewTodo (state) {
       state.todoList.push({
         title: '',
