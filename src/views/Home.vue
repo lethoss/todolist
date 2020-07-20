@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Test SPA app for todos.</h1>
-    <div v-if="!todoList.length">You have no todos! Please, enter some...</div>
+    <div v-if="!todoList.length"><a @click="addNewTodo">You have no todos! Please, click here or on bluebell...</a></div>
     <div v-else> <!--content is shown only when at least 1 todo is added-->
       <div class="todo-container"
       v-for="(todo, index) in todoList"
@@ -66,7 +66,11 @@ export default {
 h1 {
   margin-left: 100px;
 }
-
+a{
+  margin-left: 20px;
+  text-decoration: underline;
+  cursor: pointer;
+}
 .todo-item {
   border: solid 2px black;
   display: inline-block;
