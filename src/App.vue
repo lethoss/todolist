@@ -27,6 +27,9 @@ export default{
   padding: 2px 4px;
   border: 1px solid #333;
 }
+.lineThrough {
+  text-decoration:  line-through;
+}
 @media (max-width: 500px) {
   h1 {
     margin: 5px !important;
@@ -65,6 +68,7 @@ export default{
   .todo-item div {
     max-width: 83%;
   }
+
 
 }
 </style>

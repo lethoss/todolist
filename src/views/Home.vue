@@ -9,9 +9,9 @@
       > <!--dynamic create a new todo items from todoList-->
       <div class="todo-item">
         <h3 class="todo-title">Todo №{{index + 1}}: {{todo.title}}</h3>
-        <div v-if="todo.todoItems[0]">{{todo.todoItems[0].item}} <input type="checkbox" v-model="todo.todoItems[0].checked" disabled></div>
-        <div v-if="todo.todoItems[1]">{{todo.todoItems[1].item}} <input type="checkbox" v-model="todo.todoItems[1].checked" disabled></div>
-        <div v-if="todo.todoItems[2]">{{todo.todoItems[2].item}} <input type="checkbox" v-model="todo.todoItems[2].checked" disabled></div>
+        <div v-if="todo.todoItems[0]" :class="{'lineThrough': todo.todoItems[0].checked}">{{todo.todoItems[0].item}} <input type="checkbox" v-model="todo.todoItems[0].checked" disabled></div>
+        <div v-if="todo.todoItems[1]" :class="{'lineThrough': todo.todoItems[1].checked}">{{todo.todoItems[1].item}} <input type="checkbox" v-model="todo.todoItems[1].checked" disabled></div>
+        <div v-if="todo.todoItems[2]" :class="{'lineThrough': todo.todoItems[2].checked}">{{todo.todoItems[2].item}} <input type="checkbox" v-model="todo.todoItems[2].checked" disabled></div>
         <div v-if="todo.todoItems[3]">...</div> <!--if there are 4 or more todo-item we show only 3 and the ...-->
       </div>
       <span class="buttonSpan">

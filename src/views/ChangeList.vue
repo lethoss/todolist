@@ -20,13 +20,13 @@
           v-for="(todo, index) in todoListItem.todoItems"
           :key="index"
           class="todoItem"
-          >
-          <span>№{{index + 1}} - </span>
-          <input
+        >
+        <span>№{{index + 1}} - </span>
+        <input
           type="text"
           @click="showControlButtons.splice(index, 1, true)"
           v-model="todo.item" :size="todo.item.length"
-          :class="{'isEdit': showControlButtons[index], 'isView': !showTitleButton}"
+          :class="{'isEdit': showControlButtons[index], 'isView': !showTitleButton, 'lineThrough': todo.checked}"
         > <!--Dynamic creating the todos from todo Item -->
         <input type="checkbox" v-if="todo.item" v-model="todo.checked"> <!--checkbox for marking todos -->
         <span class="buttonSpan">
