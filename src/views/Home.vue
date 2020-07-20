@@ -8,14 +8,14 @@
       :key="index"
       >
       <div class="todo-item">
-        <h3 class="todo-title">{{todo.title}}</h3>
+        <h3 class="todo-title">Todo №{{index + 1}}: {{todo.title}}</h3>
         <div v-if="todo.todoItems[0]">{{todo.todoItems[0].item}} <input type="checkbox" v-model="todo.todoItems[0].checked" disabled></div>
         <div v-if="todo.todoItems[1]">{{todo.todoItems[1].item}} <input type="checkbox" v-model="todo.todoItems[1].checked" disabled></div>
         <div v-if="todo.todoItems[2]">{{todo.todoItems[2].item}} <input type="checkbox" v-model="todo.todoItems[2].checked" disabled></div>
         <div v-if="todo.todoItems[3]">...</div>
       </div>
       <button @click="editTodo(index)">Edit todo</button>
-      <button @click="removeTodo(index)">Remove todo</button>
+      <button @click="removeTodoMessage(index)">Remove todo</button>
     </div>
     <Toast v-if="removeId" v-on:closeToast="closeToast"/>
   </div>
@@ -35,26 +35,18 @@ export default {
   }),
   computed: {
     todoList () {
-      return this.$store.state.todoList
+      return this.$store.getters.getTodoList
     }
   },
   methods: {
     addNewTodo () {
-      this.todoList.push({
-        title: '',
-        todoItems: [
-          {
-            item: '',
-            checked: false
-          }
-        ]
-      })
+      this.$store.commit('addNewTodo')
       this.$router.push(`/change-list?query=${this.todoList.length - 1}`)
     },
     editTodo (index) {
       this.$router.push(`/change-list?query=${index}`)
     },
-    removeTodo (index) {
+    removeTodoMessage (index) {
       this.removeId = index + ''
       this.$store.commit('message', index)
     },

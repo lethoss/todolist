@@ -3,10 +3,10 @@
     <h2>  Changing list page </h2>
     <div>
       <label for="title">Enter title</label> <br>
-      <input id="title" type="text" v-model="todoList.title">
+      <input id="title" type="text" v-model="todoListItem.title">
       <br>
       <div>Enter new todo-item</div>
-      <div v-for="(todo, index) in todoList.todoItems"
+      <div v-for="(todo, index) in todoListItem.todoItems"
       :key="index"
       >
       <input type="text" v-model="todo.item">
@@ -18,7 +18,8 @@
     <button @click="addNewTodoItem">Add new todo-item</button>
     <br>
     <button @click="saveThisTodo">Save todo</button>
-    <button @click="actionRemove">Remove atcions</button>
+    <button @click="stepBack">Remove atcions</button>
+    <button @click="stepForvard">Forvard atcions</button>
     <br>
     <button @click="showToast('cancelEditing')">Cancel editing</button>
     <button @click="showToast('deleteThisTodo')">Remove todo</button>
@@ -34,19 +35,18 @@ export default {
     Toast
   },
   data: () => ({
-    removeId: 0
+    removeId: 0,
+    history: [],
+    count: 0
   }),
   computed: {
-    todoList() {
-       return this.$store.state.todoList[this.$route.query.query]
-     }
+    todoListItem() {
+      return this.$store.getters.getTodoList[this.$route.query.query]
+    }
   },
   methods: {
     addNewTodoItem () {
-      this.todoList.todoItems.push({
-        item: '',
-        checked: false
-      })
+      this.$store.commit('addNewTodoItem', this.$route.query.query)
     },
     showToast (index) {
       this.removeId = index + ''
@@ -55,24 +55,48 @@ export default {
     closeToast (isRemove) {
       if (isRemove === 'yes') {
         if (this.removeId === 'cancelEditing') {
+          const newItem = JSON.parse(JSON.stringify(this.history[this.count - 1]))
+          const query = this.$route.query.query
+          this.$store.commit('saveTodo', {newItem, query})
           this.$router.push('/')
         } else if (this.removeId === 'deleteThisTodo') {
           this.$store.commit('removeTodo', this.$route.query.query)
           this.$router.push('/')
         } else {
-          this.todoList.todoItems.splice(Number(this.removeId), 1)
+          const query = this.$route.query.query
+          const removeId = Number(this.removeId)
+          this.$store.commit('removeTodoItem', {removeId, query})
         }
       }
       this.removeId = 0
     },
     saveThisTodo () {
-      const newItem = this.todoList
+      const newItem = this.todoListItem
       const query = this.$route.query.query
+      this.history[this.count] = JSON.parse(JSON.stringify(this.todoListItem))
+      this.count ++
       this.$store.commit('saveTodo', {newItem, query})
     },
-    actionRemove () {
-
+    stepBack () {
+      if (this.count > 1) {
+        this.count--
+        const newItem = JSON.parse(JSON.stringify(this.history[this.count - 1]))
+        const query = this.$route.query.query
+        this.$store.commit('saveTodo', {newItem, query})
+      }
+    },
+    stepForvard () {
+      if (this.count < this.history.length) {
+        this.count++
+        const newItem = JSON.parse(JSON.stringify(this.history[this.count - 1]))
+        const query = this.$route.query.query
+        this.$store.commit('saveTodo', {newItem, query})
+      }
     }
+  },
+  mounted () {
+    this.history[this.count] = JSON.parse(JSON.stringify(this.todoListItem))
+    this.count++
   }
 }
 </script>
