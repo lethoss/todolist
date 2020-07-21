@@ -80,9 +80,10 @@ export default {
     closeToast (isRemove) {
       if (isRemove === 'yes') {
         if (this.removeId === 'cancelEditing') { //if user confirm edit canceling
-          const newItem = JSON.parse(JSON.stringify(this.history[this.count - 1])) //we write in todo List the previous history step so that the changes will not saved
-          const query = this.$route.query.query //because we transmit the Object as a parametr we cant use keyword this in brackets, so we must create a new constant
-          this.$store.commit('saveTodo', {newItem, query})
+          this.$store.commit('saveTodo', { //we write in todo List the previous history step so that the changes will not saved
+            newItem: JSON.parse(JSON.stringify(this.history[this.count - 1])),
+            query: this.$route.query.query
+          })
           if ((Number(this.$route.query.query) === this.$store.getters.getTodoList.length - 1) && !this.history[1] && !this.todoListItem.title && !this.todoListItem.todoItems[0].item) {
             this.$store.commit('removeTodo', this.$route.query.query) //if it is new, dont changed and dont saved todo item we dont save it
           }
@@ -91,19 +92,21 @@ export default {
           this.$store.commit('removeTodo', this.$route.query.query) // we delete it from todo list in Vuex store
           this.$router.push('/') // and go to home page
         } else { // if it was the confirm of todo deliting
-          const query = this.$route.query.query
-          const removeId = Number(this.removeId)
-          this.$store.commit('removeTodoItem', {removeId, query})//choosen todo will be deleted from Vuex store
+          this.$store.commit('removeTodoItem', {//choosen todo will be deleted from Vuex store
+            removeId: Number(this.removeId),
+            query: this.$route.query.query
+          })
         }
       }
       this.removeId = 0 //the pupup window will hides
     },
     saveThisTodo (closeAll) {
-      const newItem = this.todoListItem
-      const query = this.$route.query.query
       this.history[this.count] = JSON.parse(JSON.stringify(this.todoListItem)) //creating the breakpoint for history array
       this.count ++
-      this.$store.commit('saveTodo', {newItem, query})
+      this.$store.commit('saveTodo', {
+        newItem: this.todoListItem,
+        query: this.$route.query.query
+      })
       if (closeAll) { //hide all save buttons if the save todo item button was clicked
         this.showTitleButton = false
         this.showControlButtons.fill(false, 0, this.todoListItem.length)
@@ -112,17 +115,19 @@ export default {
     stepBack () {
       if (this.count > 1) { //if some earlier history points exists
         this.count--
-        const newItem = JSON.parse(JSON.stringify(this.history[this.count - 1]))
-        const query = this.$route.query.query
-        this.$store.commit('saveTodo', {newItem, query}) //we go back for one step in changes history
+        this.$store.commit('saveTodo', { //we go back for one step in changes history
+          newItem: JSON.parse(JSON.stringify(this.history[this.count - 1])),
+          query: this.$route.query.query
+        })
       }
     },
     stepForvard () {
       if (this.count < this.history.length) { //if some later history points exists
         this.count++
-        const newItem = JSON.parse(JSON.stringify(this.history[this.count - 1]))
-        const query = this.$route.query.query
-        this.$store.commit('saveTodo', {newItem, query}) //we go forward for one step in changes history
+        this.$store.commit('saveTodo', { //we go forward for one step in changes history
+          newItem: JSON.parse(JSON.stringify(this.history[this.count - 1])),
+          query: this.$route.query.query
+        })
       }
     }
   },
